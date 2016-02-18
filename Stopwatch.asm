@@ -104,11 +104,26 @@ loop9
     
 loopcount
 	
+<<<<<<< HEAD
+	movlw B'00000001'
+	movwf	PORTA
+	call delayseconds
+	movlw   ~B'01000000'   ;0
+	movwf   PORTB
+        movlw B'00000010'
+        movwf   PORTA
+        call delay01seconds
+        movlw B'01000000'
+        movlw   PORTB
+        movlw B'00000100'
+        movwf   PORTA
+=======
     movlw B'00000001'
     movwf	PORTA
     call delay
     movlw   ~B'01000000'   ;0
     movwf   PORTB
+>>>>>>> refs/remotes/origin/master
 ;	BTFSC PORTA,4
 ;	call loop0
 ;	BTFSC PORTB,0
@@ -240,6 +255,77 @@ loopcount
     
     
 ; program delay
+<<<<<<< HEAD
+delayseconds
+	movlw       	H'AA'
+  	;initialise delay counters
+	movwf       	DELAY_COUNT1
+	movlw       	H'18'
+	movwf       	DELAY_COUNT2
+	movlw       	H'03'
+	movwf       	DELAY_COUNT3
+delay_loop1
+	decfsz      	DELAY_COUNT1,F  ; innermost loop
+	goto        	delay_loop  	; decrements and loops until delay_count1=0
+	decfsz      	DELAY_COUNT2,F  ; middle loop
+	goto        	delay_loop
+	decfsz      	DELAY_COUNT3,F  ; outer loop
+	goto        	delay_loop
+	return
+
+delay01seconds
+	movlw       	H'AA'
+  	;initialise delay counters
+	movwf       	DELAY_COUNT1
+	movlw       	H'18'
+	movwf       	DELAY_COUNT2
+	movlw       	H'03'
+	movwf       	DELAY_COUNT3
+delay_loop01
+	decfsz      	DELAY_COUNT1,F  ; innermost loop
+	goto        	delay_loop  	; decrements and loops until delay_count1=0
+	decfsz      	DELAY_COUNT2,F  ; middle loop
+	goto        	delay_loop
+	decfsz      	DELAY_COUNT3,F  ; outer loop
+	goto        	delay_loop
+	return
+
+
+delay001seconds
+	movlw       	H'AA'
+  	;initialise delay counters
+	movwf       	DELAY_COUNT1
+	movlw       	H'18'
+	movwf       	DELAY_COUNT2
+	movlw       	H'03'
+	movwf       	DELAY_COUNT3
+delay_loop001
+	decfsz      	DELAY_COUNT1,F  ; innermost loop
+	goto        	delay_loop  	; decrements and loops until delay_count1=0
+	decfsz      	DELAY_COUNT2,F  ; middle loop
+	goto        	delay_loop
+	decfsz      	DELAY_COUNT3,F  ; outer loop
+	goto        	delay_loop
+	return
+
+
+delay0001seconds
+	movlw       	H'AA'
+  	;initialise delay counters
+	movwf       	DELAY_COUNT1
+	movlw       	H'18'
+	movwf       	DELAY_COUNT2
+	movlw       	H'03'
+	movwf       	DELAY_COUNT3
+delay_loop0001
+	decfsz      	DELAY_COUNT1,F  ; innermost loop
+	goto        	delay_loop  	; decrements and loops until delay_count1=0
+	decfsz      	DELAY_COUNT2,F  ; middle loop
+	goto        	delay_loop
+	decfsz      	DELAY_COUNT3,F  ; outer loop
+	goto        	delay_loop
+	return
+=======
 delay
     movlw       	H'AA'
   	;initialise delay counters
@@ -256,6 +342,7 @@ delay_loop
     decfsz      	DELAY_COUNT3,F  ; outer loop
     goto        	delay_loop
     return
+>>>>>>> refs/remotes/origin/master
 
 delay2
     
@@ -267,6 +354,16 @@ delay2
     movlw       	H'03'
     movwf       	DELAY_COUNT3
 delay_loop2
+<<<<<<< HEAD
+	decfsz      	DELAY_COUNT1,F  ; innermost loop
+	goto        	delay_loop  	; decrements and loops until delay_count1=0
+	decfsz      	DELAY_COUNT2,F  ; middle loop
+	goto        	delay_loop
+	decfsz      	DELAY_COUNT3,F  ; outer loop
+	goto        	delay_loop
+	return
+end
+=======
     decfsz      	DELAY_COUNT1,F  ; innermost loop
     goto        	delay_loop  	; decrements and loops until delay_count1=0
     decfsz      	DELAY_COUNT2,F  ; middle loop
@@ -275,3 +372,4 @@ delay_loop2
     goto        	delay_loop
     return
 end
+>>>>>>> refs/remotes/origin/master

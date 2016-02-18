@@ -103,8 +103,6 @@ loop9
 
     
 loopcount
-	
-<<<<<<< HEAD
 	movlw B'00000001'
 	movwf	PORTA
 	call delayseconds
@@ -117,13 +115,7 @@ loopcount
         movlw   PORTB
         movlw B'00000100'
         movwf   PORTA
-=======
-    movlw B'00000001'
-    movwf	PORTA
-    call delay
-    movlw   ~B'01000000'   ;0
-    movwf   PORTB
->>>>>>> refs/remotes/origin/master
+        
 ;	BTFSC PORTA,4
 ;	call loop0
 ;	BTFSC PORTB,0

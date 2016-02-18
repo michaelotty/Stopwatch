@@ -255,7 +255,6 @@ loopcount
     
     
 ; program delay
-<<<<<<< HEAD
 delayseconds
 	movlw       	H'AA'
   	;initialise delay counters
@@ -289,7 +288,6 @@ delay_loop01
 	decfsz      	DELAY_COUNT3,F  ; outer loop
 	goto        	delay_loop
 	return
-
 
 delay001seconds
 	movlw       	H'AA'
@@ -325,27 +323,8 @@ delay_loop0001
 	decfsz      	DELAY_COUNT3,F  ; outer loop
 	goto        	delay_loop
 	return
-=======
-delay
-    movlw       	H'AA'
-  	;initialise delay counters
-    movwf       	DELAY_COUNT1
-    movlw       	H'18'
-    movwf       	DELAY_COUNT2
-    movlw       	H'03'
-    movwf       	DELAY_COUNT3
-delay_loop
-    decfsz      	DELAY_COUNT1,F  ; innermost loop
-    goto        	delay_loop  	; decrements and loops until delay_count1=0
-    decfsz      	DELAY_COUNT2,F  ; middle loop
-    goto        	delay_loop
-    decfsz      	DELAY_COUNT3,F  ; outer loop
-    goto        	delay_loop
-    return
->>>>>>> refs/remotes/origin/master
 
 delay2
-    
     movlw       	H'08'
   	;initialise delay counters
     movwf       	DELAY_COUNT1
@@ -354,16 +333,6 @@ delay2
     movlw       	H'03'
     movwf       	DELAY_COUNT3
 delay_loop2
-<<<<<<< HEAD
-	decfsz      	DELAY_COUNT1,F  ; innermost loop
-	goto        	delay_loop  	; decrements and loops until delay_count1=0
-	decfsz      	DELAY_COUNT2,F  ; middle loop
-	goto        	delay_loop
-	decfsz      	DELAY_COUNT3,F  ; outer loop
-	goto        	delay_loop
-	return
-end
-=======
     decfsz      	DELAY_COUNT1,F  ; innermost loop
     goto        	delay_loop  	; decrements and loops until delay_count1=0
     decfsz      	DELAY_COUNT2,F  ; middle loop
@@ -372,4 +341,3 @@ end
     goto        	delay_loop
     return
 end
->>>>>>> refs/remotes/origin/master

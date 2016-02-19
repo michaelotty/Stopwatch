@@ -1,3 +1,3 @@
 build/default/production/Stopwatch.o:  \
-	H:/dos/PIC/Stopwatch.X/Stopwatch.asm  \
+	C:/Users/micha/OneDrive/Documents/GitHub/Stopwatch.X/Stopwatch.asm  \
 

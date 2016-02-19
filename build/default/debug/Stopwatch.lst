@@ -1,0 +1,537 @@
+MPASM 5.65                     STOPWATCH.ASM   2-18-2016  16:02:35         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 #include P16F84A.INC
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Dec 08 2015
+                      00005 ;  MPASM PIC16F84A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2015 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00209         LIST
+2007   3FF1           00002     __config _XT_OSC  &  _WDT_OFF & _PWRTE_ON
+                      00003 ;File Registers used by delay subroutine
+  00000021            00004 DELAY_COUNT1            EQU     H'21'
+  00000022            00005 DELAY_COUNT2            EQU     H'22'
+  00000023            00006 DELAY_COUNT3            EQU     H'23'
+Warning[205]: Found directive in column 1. (ORG)
+                      00007 ORG   h'0'
+0000   1683           00008     bsf         STATUS,5        ;select bank 1
+0001   3001           00009     movlw       B'00000001'   ;set up port B0 as input
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0002   0086           00010     movwf       TRISB
+0003   3010           00011     movlw       B'00010000'   ;set up port A4 as an input
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0004   0085           00012     movwf       TRISA
+0005   1283           00013     bcf         STATUS,5        ;select bank 0
+                      00014         
+0006                  00015 loop
+0006   300F           00016     movlw       B'00001111'
+0007   0085           00017     movwf       PORTA
+0008   30FF           00018     movlw       ~B'0'
+0009   2???           00019     call        conversion
+                      00020 
+                      00021 ;    BTFSC      PORTA,4
+                      00022 ;    goto       loopcount       
+000A   2???           00023     goto        loop
+                      00024             
+                      00025 ;loop0    
+                      00026 ;    movlw ~B'00001100'
+                      00027 ;    movwf PORTB
+                      00028 ;    call delay2
+                      00029 ;    BTFSC PORTA,4
+                      00030 ;    return 
+                      00031 ;    goto loop0
+                      00032 ;    
+                      00033 ;loop1    
+                      00034 ;    movlw ~B'00001100'
+                      00035 ;    movwf PORTB
+                      00036 ;    call delay2
+                      00037 ;    BTFSC PORTA,4
+                      00038 ;    return 
+                      00039 ;    goto loop1
+                      00040 ;
+MPASM 5.65                     STOPWATCH.ASM   2-18-2016  16:02:35         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00041 ;loop2
+                      00042 ;    movlw  ~B'11011010'
+                      00043 ;    movwf PORTB
+                      00044 ;    call delay2
+                      00045 ;    BTFSC PORTA,4
+                      00046 ;    return
+                      00047 ;    goto loop2
+                      00048 ;
+                      00049 ;loop3
+                      00050 ;    movlw   ~B'11110010' 
+                      00051 ;    movwf PORTB
+                      00052 ;    call delay2
+                      00053 ;    BTFSC PORTA,4
+                      00054 ;    return
+                      00055 ;    goto loop3
+                      00056 ;
+                      00057 ;loop4
+                      00058 ;    movlw   ~B'11100100' 
+                      00059 ;    movwf PORTB
+                      00060 ;    call delay2
+                      00061 ;    BTFSC PORTA,4
+                      00062 ;    return
+                      00063 ;    goto loop4
+                      00064 ;
+                      00065 ;loop5
+                      00066 ;    movlw      ~B'01110110' 
+                      00067 ;    movwf      PORTB
+                      00068 ;    call       delay2
+                      00069 ;    BTFSC      PORTA,4
+                      00070 ;    return
+                      00071 ;    goto       loop5
+                      00072 ;
+                      00073 ;loop6
+                      00074 ;    movlw      ~B'01111110'  
+                      00075 ;    movwf      PORTB
+                      00076 ;    call       delay2
+                      00077 ;    BTFSC      PORTA,4
+                      00078 ;    return
+                      00079 ;    goto       loop6
+                      00080 ;
+                      00081 ;loop7
+                      00082 ;    movlw   ~B'10100010' 
+                      00083 ;    movwf PORTB
+                      00084 ;    call delay2
+                      00085 ;    BTFSC PORTA,4
+                      00086 ;    return
+                      00087 ;    goto loop7
+                      00088 ;
+                      00089 ;loop8
+                      00090 ;    movlw   ~B'11111110'
+                      00091 ;    movwf PORTB
+                      00092 ;    call delay2
+                      00093 ;    BTFSC PORTA,4
+MPASM 5.65                     STOPWATCH.ASM   2-18-2016  16:02:35         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00094 ;    return
+                      00095 ;    goto loop8
+                      00096 ;
+                      00097 ;loop9
+                      00098 ;    movlw   ~B'11100111'
+                      00099 ;    movwf PORTB
+                      00100 ;    call delay2
+                      00101 ;    BTFSC PORTA,4
+                      00102 ;    return
+                      00103 ;    goto loop9
+                      00104 ;
+                      00105 ;
+                      00106 ;    
+                      00107 ;loopcount
+                      00108 ;    movlw B'00000001'
+                      00109 ;    movwf      PORTA
+                      00110 ;    call delayseconds
+                      00111 ;    movlw   ~B'01000000'   ;0
+                      00112 ;    movwf   PORTB
+                      00113 ;    movlw B'00000010'
+                      00114 ;    movwf   PORTA
+                      00115 ;    call delay01seconds
+                      00116 ;    movlw B'01000000'
+                      00117 ;    movlw   PORTB
+                      00118 ;    movlw B'00000100'
+                      00119 ;    movwf   PORTA
+                      00120 ;        
+                      00121 ;;      BTFSC PORTA,4
+                      00122 ;;      call loop0
+                      00123 ;;      BTFSC PORTB,0
+                      00124 ;;      call loopcount
+                      00125 ;    call delayseconds
+                      00126 ;;      BTFSC PORTA,4
+                      00127 ;;      call loop0
+                      00128 ;;      BTFSC PORTB,0
+                      00129 ;;      call loopcount
+                      00130 ;       
+                      00131 ;    call delayseconds
+                      00132 ;    movlw   ~B'00001100'   ;1
+                      00133 ;    movwf   PORTB
+                      00134 ;;      BTFSC PORTA,4
+                      00135 ;;      call loop1
+                      00136 ;;      BTFSC PORTB,0
+                      00137 ;;      call loopcount
+                      00138 ;    call delayseconds
+                      00139 ;;      BTFSC PORTA,4
+                      00140 ;;      call loop1
+                      00141 ;;      BTFSC PORTB,0
+                      00142 ;;      call loopcount
+                      00143 ;       
+                      00144 ;    call delayseconds
+                      00145 ;    movlw   ~B'11011010'   ;2
+                      00146 ;    movwf   PORTB
+MPASM 5.65                     STOPWATCH.ASM   2-18-2016  16:02:35         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00147 ;;      BTFSC PORTA,4
+                      00148 ;;      call loop2
+                      00149 ;;      BTFSC PORTB,0
+                      00150 ;;      call loopcount
+                      00151 ;    call delayseconds
+                      00152 ;;      BTFSC PORTA,4
+                      00153 ;;      call loop2
+                      00154 ;;      BTFSC PORTB,0
+                      00155 ;;      call loopcount
+                      00156 ;       
+                      00157 ;    call delayseconds
+                      00158 ;    movlw   ~B'11110010'  ;3
+                      00159 ;    movwf   PORTB
+                      00160 ;;      BTFSC PORTA,4
+                      00161 ;;      call loop3
+                      00162 ;;      BTFSC PORTB,0
+                      00163 ;;      call loopcount
+                      00164 ;    call delayseconds
+                      00165 ;;      BTFSC PORTA,4
+                      00166 ;;      call loop3
+                      00167 ;;      BTFSC PORTB,0
+                      00168 ;;      call loopcount
+                      00169 ;       
+                      00170 ;    call delayseconds
+                      00171 ;    movlw   ~B'11100100'   ;4
+                      00172 ;    movwf   PORTB
+                      00173 ;;      BTFSC PORTA,4
+                      00174 ;;      call loop4
+                      00175 ;;      BTFSC PORTB,0
+                      00176 ;;      call loopcount
+                      00177 ;    call delayseconds
+                      00178 ;;      BTFSC PORTA,4
+                      00179 ;;      call loop4
+                      00180 ;;      BTFSC PORTB,0
+                      00181 ;;      call loopcount
+                      00182 ;       
+                      00183 ;    call delayseconds
+                      00184 ;    movlw   ~B'01110110'  ;5
+                      00185 ;    movwf   PORTB
+                      00186 ;;      BTFSC PORTA,4
+                      00187 ;;      call loop5
+                      00188 ;;      BTFSC PORTB,0
+                      00189 ;;      call loopcount
+                      00190 ;    call delayseconds
+                      00191 ;;      BTFSC PORTA,4
+                      00192 ;;      call loop5
+                      00193 ;;      BTFSC PORTB,0
+                      00194 ;;      call loopcount
+                      00195 ;       
+                      00196 ;    call delayseconds
+                      00197 ;    movlw   ~B'01111110'   ;6
+                      00198 ;    movwf   PORTB
+                      00199 ;;      BTFSC PORTA,4
+MPASM 5.65                     STOPWATCH.ASM   2-18-2016  16:02:35         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00200 ;;      call loop6
+                      00201 ;;      BTFSC PORTB,0
+                      00202 ;;      call loopcount
+                      00203 ;    call delayseconds
+                      00204 ;;      BTFSC PORTA,4
+                      00205 ;;      call loop6
+                      00206 ;;      BTFSC PORTB,0
+                      00207 ;;      call loopcount
+                      00208 ;       
+                      00209 ;    call delayseconds
+                      00210 ;    movlw   ~B'10100010'  ;7
+                      00211 ;    movwf   PORTB
+                      00212 ;;      BTFSC PORTA,4
+                      00213 ;;      call loop7
+                      00214 ;;      BTFSC PORTB,0
+                      00215 ;;      call loopcount
+                      00216 ;    call delayseconds
+                      00217 ;;      BTFSC PORTA,4
+                      00218 ;;      call loop7
+                      00219 ;;      BTFSC PORTB,0
+                      00220 ;;      call loopcount
+                      00221 ;       
+                      00222 ;    call delayseconds
+                      00223 ;    movlw   ~B'11111110' ;8
+                      00224 ;    movwf   PORTB
+                      00225 ;;      BTFSC PORTA,4
+                      00226 ;;      call loop8
+                      00227 ;;      BTFSC PORTB,0
+                      00228 ;;      call loopcount
+                      00229 ;    call delayseconds
+                      00230 ;;      BTFSC PORTA,4
+                      00231 ;;      call loop8
+                      00232 ;;      BTFSC PORTB,0
+                      00233 ;;      call loopcount
+                      00234 ;       
+                      00235 ;    call delayseconds
+                      00236 ;    movlw   ~B'11100111'  ;9
+                      00237 ;    movwf   PORTB
+                      00238 ;;      BTFSC PORTA,4
+                      00239 ;;      call loop9
+                      00240 ;;      BTFSC PORTB,0
+                      00241 ;;      call loopcount
+                      00242 ;    call delayseconds
+                      00243 ;;      BTFSC PORTA,4
+                      00244 ;;      call loop9
+                      00245 ;;      BTFSC PORTB,0
+                      00246 ;;      call loopcount
+                      00247 ;       
+                      00248 ;    goto loopcount
+                      00249 ;    
+                      00250 ;    
+                      00251 ;; program delay
+                      00252 ;delayseconds
+MPASM 5.65                     STOPWATCH.ASM   2-18-2016  16:02:35         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00253 ;    movlw              H'AA'
+                      00254 ;       ;initialise delay counters
+                      00255 ;    movwf              DELAY_COUNT1
+                      00256 ;    movlw              H'18'
+                      00257 ;    movwf              DELAY_COUNT2
+                      00258 ;    movlw              H'03'
+                      00259 ;    movwf              DELAY_COUNT3
+                      00260 ;delay_loop1
+                      00261 ;    decfsz             DELAY_COUNT1,F  ; innermost loop
+                      00262 ;    goto               delay_loop1     ; decrements and loops until delay_count1=0
+                      00263 ;    decfsz             DELAY_COUNT2,F  ; middle loop
+                      00264 ;    goto               delay_loop1
+                      00265 ;    decfsz             DELAY_COUNT3,F  ; outer loop
+                      00266 ;    goto               delay_loop1
+                      00267 ;    return
+                      00268 ;
+                      00269 ;delay01seconds
+                      00270 ;    movlw              H'AA'
+                      00271 ;       ;initialise delay counters
+                      00272 ;    movwf              DELAY_COUNT1
+                      00273 ;    movlw              H'18'
+                      00274 ;    movwf              DELAY_COUNT2
+                      00275 ;    movlw              H'03'
+                      00276 ;    movwf              DELAY_COUNT3
+                      00277 ;delay_loop01
+                      00278 ;    decfsz             DELAY_COUNT1,F  ; innermost loop
+                      00279 ;    goto               delay_loop01    ; decrements and loops until delay_count1=0
+                      00280 ;    decfsz             DELAY_COUNT2,F  ; middle loop
+                      00281 ;    goto               delay_loop01
+                      00282 ;    decfsz             DELAY_COUNT3,F  ; outer loop
+                      00283 ;    goto               delay_loop01
+                      00284 ;    return
+                      00285 ;
+                      00286 ;delay001seconds
+                      00287 ;    movlw              H'AA'
+                      00288 ;       ;initialise delay counters
+                      00289 ;    movwf              DELAY_COUNT1
+                      00290 ;    movlw              H'18'
+                      00291 ;    movwf              DELAY_COUNT2
+                      00292 ;    movlw              H'03'
+                      00293 ;    movwf              DELAY_COUNT3
+                      00294 ;delay_loop001
+                      00295 ;    decfsz             DELAY_COUNT1,F  ; innermost loop
+                      00296 ;    goto               delay_loop001   ; decrements and loops until delay_count1=0
+                      00297 ;    decfsz             DELAY_COUNT2,F  ; middle loop
+                      00298 ;    goto               delay_loop001
+                      00299 ;    decfsz             DELAY_COUNT3,F  ; outer loop
+                      00300 ;    goto               delay_loop001
+                      00301 ;    return
+                      00302 ;
+                      00303 ;
+                      00304 ;delay0001seconds
+                      00305 ;    movlw              H'AA'
+MPASM 5.65                     STOPWATCH.ASM   2-18-2016  16:02:35         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00306 ;       ;initialise delay counters
+                      00307 ;    movwf              DELAY_COUNT1
+                      00308 ;    movlw              H'18'
+                      00309 ;    movwf              DELAY_COUNT2
+                      00310 ;    movlw              H'03'
+                      00311 ;    movwf              DELAY_COUNT3
+                      00312 ;delay_loop0001
+                      00313 ;    decfsz             DELAY_COUNT1,F  ; innermost loop
+                      00314 ;    goto               delay_loop0001          ; decrements and loops until delay_count1=0
+                      00315 ;    decfsz             DELAY_COUNT2,F  ; middle loop
+                      00316 ;    goto               delay_loop0001
+                      00317 ;    decfsz             DELAY_COUNT3,F  ; outer loop
+                      00318 ;    goto               delay_loop0001
+                      00319 ;    return
+                      00320 ;
+                      00321 ;delay2
+                      00322 ;    movlw              H'08'
+                      00323 ;       ;initialise delay counters
+                      00324 ;    movwf              DELAY_COUNT1
+                      00325 ;    movlw              H'18'
+                      00326 ;    movwf              DELAY_COUNT2
+                      00327 ;    movlw              H'03'
+                      00328 ;    movwf              DELAY_COUNT3
+                      00329 ;delay_loop2
+                      00330 ;    decfsz             DELAY_COUNT1,F  ; innermost loop
+                      00331 ;    goto               delay_loop2     ; decrements and loops until delay_count1=0
+                      00332 ;    decfsz             DELAY_COUNT2,F  ; middle loop
+                      00333 ;    goto               delay_loop2
+                      00334 ;    decfsz             DELAY_COUNT3,F  ; outer loop
+                      00335 ;    goto               delay_loop2
+                      00336 ;    return
+                      00337     
+000B                  00338 conversion
+Message[305]: Using default destination of 1 (file).
+000B   0782           00339     addwf   PCL
+000C   3441           00340     retlw   ~B'10111110'    ;0
+000D   34CF           00341     retlw   ~B'00110000'    ;1
+000E   3425           00342     retlw   ~B'11011010'    ;2
+000F   340D           00343     retlw   ~B'11110010'    ;3
+0010   341B           00344     retlw   ~B'11100100'    ;4
+0011   3489           00345     retlw   ~B'01110110'    ;5
+0012   3481           00346     retlw   ~B'01111110'    ;6
+0013   345D           00347     retlw   ~B'10100010'    ;7
+0014   3401           00348     retlw   ~B'11111110'    ;8
+0015   3418           00349     retlw   ~B'11100111'    ;9
+0016   3411           00350     retlw   ~B'11101110'    ;A
+Warning[205]: Found directive in column 1. (end)
+3FF1                  00351 end
+MPASM 5.65                     STOPWATCH.ASM   2-18-2016  16:02:35         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+C                                 00000000
+DC                                00000001
+DELAY_COUNT1                      00000021
+DELAY_COUNT2                      00000022
+DELAY_COUNT3                      00000023
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+STATUS                            00000003
+T0CS                              00000005
+T0IE                              00000005
+MPASM 5.65                     STOPWATCH.ASM   2-18-2016  16:02:35         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84A                          00000001
+__DEBUG                           
+__MPLAB_DEBUGGER_PK3              1
+conversion                        0000000B
+loop                              00000006
+
+MPASM 5.65                     STOPWATCH.ASM   2-18-2016  16:02:35         PAGE 10
+
+
+
+
+
+Errors   :     0
+Warnings :     2 reported,     0 suppressed
+Messages :     3 reported,     0 suppressed
+
+

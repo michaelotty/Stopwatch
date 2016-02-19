@@ -24,3 +24,4 @@ funclist
 nbproject/Makefile-*
 disassembly/
 *.map
+*.fil

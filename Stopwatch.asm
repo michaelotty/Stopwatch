@@ -1,6 +1,6 @@
 #include P16F84A.INC
     __config _XT_OSC  &  _WDT_OFF & _PWRTE_ON
-;File Registers used by delay subroutine
+;File Registers used by delay subroutine and the counter
 Segment1  EQU H'0D'
 Segment2  EQU H'0E'
 Segment3  EQU H'0F'
@@ -17,96 +17,95 @@ ORG   h'0'
     bcf     STATUS,5      ;select bank 0
         
 loop
-
-    movlw       H'01'
+    movlw       H'09'
     call conversion
     movwf    PORTB
     movlw       B'00000001'
     movwf    PORTA
     call delay2
-    movlw       B'00000000'
-    movwf    PORTA
+    clrf PORTA
     
 
-    movlw       H'02'
+    movlw       H'09'
     call conversion
     movwf    PORTB
     movlw       B'00000010'
     movwf    PORTA
     call delay2
-    movlw       B'00000000'
-    movwf    PORTA
+    clrf PORTA
     
 
-    movlw       H'03'
+    movlw       H'09'
     call conversion
     movwf    PORTB
     movlw       B'00000100'
     movwf    PORTA
     call delay2
-    movlw       B'00000000'
-    movwf    PORTA
+    clrf PORTA
     
 
-    movlw       H'04'
+    movlw       H'09'
     call conversion
     movwf    PORTB
     movlw       B'00001000'
     movwf    PORTA
     call delay2
-    movlw       B'00000000'
-    movwf    PORTA
+    clrf PORTA
 
     BTFSC    PORTA,4
     goto    loopcount    
     goto    loop
         
 
-loopcount
-    movlw H'10'
+    loopcount
+    call delay2
+    movlw H'9'
     movwf Segment4
-    movlw H'10'
+    movlw H'9'
     movwf Segment3
-    movlw H'10'
+    movlw H'9'
     movwf Segment2
-    movlw H'10'
+    movlw H'9'
     movwf Segment1
-milliloop
+    milliloop
+    BTFSC    PORTA,4
+    goto    Stopped
+    BTFSC    PORTB,0
+    goto    loopcount
+    call delay
     call Display ;Call the function which displays the number on the segments depending on the value of ‘Segment'
     decfsz Segment4
-    call delay
     goto milliloop ;inner loop for the milliseconds
     call Display
-    movlw H'10'
+    movlw H'9' ;reset milliseconds
     movwf Segment4
     
-    decfsz Segment3
+    decfsz Segment3 ;loop for centiseconds
     goto milliloop 
     call Display
-    movlw H'10'
+    movlw H'9' ;reset centiseconds
     movwf Segment3
     
-    decfsz Segment2
+    decfsz Segment2 ;loop for deciseconds
     goto milliloop
     call Display
-    movlw H'10'
+    movlw H'9' ;reset deciseconds
     movwf Segment2 
     
-    decfsz Segment1
+    decfsz Segment1 ;loop for seconds
     goto milliloop
-    movlw H'10'
+    movlw H'9' ;reset seconds
     movwf Segment1 
     goto loopcount
     
     
 ; program delay
 delay
-    movlw           H'AA'
-      ;initialise delay counters
+    movlw           H'FA' ;initialise delay counters
     movwf           DELAY_COUNT1
-    movlw           H'18'
+    movlw           H'FA'
     movwf           DELAY_COUNT2
-    movlw           H'03'
+    movlw           H'00'
     movwf           DELAY_COUNT3
 delay_loop1
     decfsz          DELAY_COUNT1,F  ; innermost loop
@@ -116,9 +115,6 @@ delay_loop1
     decfsz          DELAY_COUNT3,F  ; outer loop
     goto            delay_loop1
     return
-
-
-
 
 delay2
     movlw           H'FF'
@@ -135,53 +131,86 @@ delay_loop2
     
 conversion
     addwf   PCL
-    retlw   ~B'10111110'    ;0
-    retlw   ~B'10100000'    ;1
-    retlw   ~B'11011010'    ;2
-    retlw   ~B'11110010'    ;3
-    retlw   ~B'11100100'    ;4
-    retlw   ~B'01110110'    ;5
-    retlw   ~B'01111110'    ;6
-    retlw   ~B'10100010'    ;7
-    retlw   ~B'11111110'    ;8
-    retlw   ~B'11100111'    ;9
+    retlw   ~B'11100111'	;9
+    retlw   ~B'11111110'	;8
+    retlw   ~B'10100010'	;7
+    retlw   ~B'01111110'	;6
+    retlw   ~B'01110110'	;5
+    retlw   ~B'11100100'	;4
+    retlw   ~B'11110010'	;3
+    retlw   ~B'11011010'	;2
+    retlw   ~B'10100000'	;1
+    retlw   ~B'10111110'	;0
 
 Display
-    movlw Segment1
+    movfw Segment1
     call conversion
     movwf PORTB
     movlw B'00000001'
     movwf PORTA
     call delay2
-    movlw B'00000000'
-    movwf PORTA
+    clrf PORTA
 
-    movlw Segment2
+    movfw Segment2
     call conversion
     movwf PORTB
-    mowlw B'00000010'
+    movlw B'00000010'
     movwf PORTA
     call delay2
-    movlw B'00000000'
-    movwf PORTA
+    clrf PORTA
 
-    movlw Segment3
+    movfw Segment3
     call conversion
     movwf PORTB
     movlw B'00000100'
     movwf PORTA
     call delay2
-    movlw B'00000000'
-    movwf PORTA
+    clrf PORTA
     
-    movlw Segment4
+    movfw Segment4
     call conversion
     movwf PORTB
     movlw B'00001000'
     movwf PORTA
     call delay2
-    movlw B'00000000'
-    movwf PORTA
-    
+    clrf PORTA
     Return
-end
+    
+Stopped
+    movfw Segment1
+    call conversion
+    movwf PORTB
+    movlw B'00000001'
+    movwf PORTA
+    call delay2
+    clrf PORTA
+
+    movfw Segment2
+    call conversion
+    movwf PORTB
+    movlw B'00000010'
+    movwf PORTA
+    call delay2
+    clrf PORTA
+
+    movfw Segment3
+    call conversion
+    movwf PORTB
+    movlw B'00000100'
+    movwf PORTA
+    call delay2
+    clrf PORTA
+    
+    movfw Segment4
+    call conversion
+    movwf PORTB
+    movlw B'00001000'
+    movwf PORTA
+    call delay2
+    clrf PORTA
+    BTFSC PORTB,4
+    Return
+    goto stopped
+    
+    
+    end

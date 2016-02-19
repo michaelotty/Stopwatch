@@ -57,8 +57,8 @@ loop
     movlw       B'00000000'
     movwf    PORTA
 
-;    BTFSC    PORTA,4
-;    goto    loopcount    
+    BTFSC    PORTA,4
+    goto    loopcount    
     goto    loop
         
 
@@ -77,14 +77,25 @@ milliloop
     call delay
     goto milliloop ;inner loop for the milliseconds
     call Display
+    movlw H'10'
+    movwf Segment4
+    
     decfsz Segment3
     goto milliloop 
     call Display
+    movlw H'10'
+    movwf Segment3
+    
     decfsz Segment2
     goto milliloop
     call Display
+    movlw H'10'
+    movwf Segment2 
+    
     decfsz Segment1
     goto milliloop
+    movlw H'10'
+    movwf Segment1 
     goto loopcount
     
     
@@ -136,24 +147,41 @@ conversion
     retlw   ~B'11100111'    ;9
 
 Display
-    movf B'00001111',PORTA
     movlw Segment1
     call conversion
     movwf PORTB
+    movlw B'00000001'
+    movwf PORTA
+    call delay2
+    movlw B'00000000'
+    movwf PORTA
 
-    ;movf B'00000010',PORTA
     movlw Segment2
     call conversion
     movwf PORTB
+    mowlw B'00000010'
+    movwf PORTA
+    call delay2
+    movlw B'00000000'
+    movwf PORTA
 
-   ; movf B'00000100',PORTA
     movlw Segment3
     call conversion
     movwf PORTB
-
-   ; movf B'00001000',PORTA
+    movlw B'00000100'
+    movwf PORTA
+    call delay2
+    movlw B'00000000'
+    movwf PORTA
+    
     movlw Segment4
     call conversion
     movwf PORTB
+    movlw B'00001000'
+    movwf PORTA
+    call delay2
+    movlw B'00000000'
+    movwf PORTA
+    
     Return
 end

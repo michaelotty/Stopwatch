@@ -1,5 +1,0 @@
-Warning[205] C:\USERS\MICHA\ONEDRIVE\DOCUMENTS\GITHUB\STOPWATCH.X\STOPWATCH.ASM 7 : Found directive in column 1. (ORG)
-Message[302] C:\USERS\MICHA\ONEDRIVE\DOCUMENTS\GITHUB\STOPWATCH.X\STOPWATCH.ASM 10 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\MICHA\ONEDRIVE\DOCUMENTS\GITHUB\STOPWATCH.X\STOPWATCH.ASM 12 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[305] C:\USERS\MICHA\ONEDRIVE\DOCUMENTS\GITHUB\STOPWATCH.X\STOPWATCH.ASM 340 : Using default destination of 1 (file).
-Warning[205] C:\USERS\MICHA\ONEDRIVE\DOCUMENTS\GITHUB\STOPWATCH.X\STOPWATCH.ASM 352 : Found directive in column 1. (end)

@@ -1,5 +1,0 @@
-Warning[205] H:\DOS\PIC\STOPWATCH.X\STOPWATCH.ASM 7 : Found directive in column 1. (ORG)
-Message[302] H:\DOS\PIC\STOPWATCH.X\STOPWATCH.ASM 10 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] H:\DOS\PIC\STOPWATCH.X\STOPWATCH.ASM 12 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[305] H:\DOS\PIC\STOPWATCH.X\STOPWATCH.ASM 339 : Using default destination of 1 (file).
-Warning[205] H:\DOS\PIC\STOPWATCH.X\STOPWATCH.ASM 351 : Found directive in column 1. (end)

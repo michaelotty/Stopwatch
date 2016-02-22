@@ -58,8 +58,8 @@ loop ;Displays all 0's until the start button is pressed
         
 
 loopcount ;Main loop
-    btfsc PORTA,4 ;Debounce - Makes sure that the use has removed their finger from the button before continuing.
-    goto  loopcount
+    btfsc   PORTA,4 ;Debounce - Makes sure that the use has removed their finger from the button before continuing.
+    goto    loopcount
 
 ;Moves 'A' to the registers
     movlw   H'A' ;
@@ -172,8 +172,8 @@ display ;For displaying the correct numbers depending on the value of 'Segment'
     return
     
 Stopped ;Loop for freezing the display. The same as 'Display' but it waits for the user to press the button again before returning.
-    btfsc PORTA,4
-    goto Stopped ;Button debounce
+    btfsc   PORTA,4
+    goto    Stopped ;Button debounce
     
     movfw   Segment1
     call    conversion
@@ -207,7 +207,7 @@ Stopped ;Loop for freezing the display. The same as 'Display' but it waits for t
     call    delay2
     clrf    PORTA
     btfsc   PORTA,4
-    goto continue
+    goto    continue
     
     btfsc   PORTB,0 ;Checks for voltage at A0 
     goto    loop ;Restarts the stopwatch

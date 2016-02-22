@@ -27,7 +27,6 @@ loop
     call    delay2
     clrf    PORTA
     
-
     movlw   H'A'
     call    conversion
     movwf   PORTB
@@ -35,7 +34,6 @@ loop
     movwf   PORTA
     call    delay2
     clrf    PORTA
-    
 
     movlw   H'A'
     call    conversion
@@ -45,7 +43,6 @@ loop
     call    delay2
     clrf    PORTA
     
-
     movlw   H'A'
     call    conversion
     movwf   PORTB
@@ -60,6 +57,8 @@ loop
         
 
 loopcount
+    btfsc PORTA,4
+    goto  loopcount
     ;call    delay2
     movlw   H'A'
     movwf   Segment4
@@ -70,8 +69,13 @@ loopcount
     movlw   H'A'
     movwf   Segment1
 milliloop
-    ;btfsc   PORTB,0
-    ;goto    loopcount
+    btfsc   PORTA,4
+    goto    Stopped
+    
+    test
+    btfsc   PORTA, 4
+    goto    test
+    
     ;call    delay
     call    display         ;Call the function which displays the number on the segments depending on the value of ‘Segment'
     decfsz  Segment4
@@ -80,41 +84,33 @@ milliloop
     movlw   H'A'            ;reset milliseconds
     movwf   Segment4
     
+
+    
     decfsz  Segment3        ;loop for centiseconds
     goto    milliloop 
     call    display
     movlw   H'A'            ;reset centiseconds
     movwf   Segment3
     
+
+    
     decfsz  Segment2        ;loop for deciseconds
     goto    milliloop
     call    display
     movlw   H'A'            ;reset deciseconds
-    movwf   Segment2 
+    movwf   Segment2
+    
+    
     
     decfsz  Segment1        ;loop for seconds
     goto    milliloop
     movlw   H'A'            ;reset seconds
     movwf   Segment1 
+    
+
     goto    loopcount
     
     
-; program delay
-;delay
-;    movlw   H'FF'           ;initialise delay counters
-;    movwf   DELAY_COUNT1
-;    movlw   H'01'
-;    movwf   DELAY_COUNT2
-;    movlw   H'00'
-;    movwf   DELAY_COUNT3
-;delay_loop1
-;    decfsz  DELAY_COUNT1,F  ; innermost loop
-;    goto    delay_loop1     ; decrements and loops until delay_count1=0
-;    decfsz  DELAY_COUNT2,F  ; middle loop
-;    goto    delay_loop1
-;    decfsz  DELAY_COUNT3,F  ; outer loop
-;    goto    delay_loop1
-;    return
 
 delay2
     movlw   H'46'
@@ -127,6 +123,17 @@ delay_loop2
     goto    delay_loop2     ; decrements and loops until delay_count1=0
 ;    decfsz	DELAY_COUNT2,F
 ;    goto	delay_loop2
+    return
+    
+    delay3
+    movlw   H'FF'
+      ;initialise delay counters
+    movwf   DELAY_COUNT1
+
+delay_loop3
+    decfsz  DELAY_COUNT1,F  ; innermost loop
+    goto    delay_loop2     ; decrements and loops until delay_count1=0
+
     return
     
 conversion
@@ -159,6 +166,7 @@ display
     movwf   PORTA
     call    delay2
     clrf    PORTA
+    
 
     movfw   Segment3
     call    conversion
@@ -174,10 +182,12 @@ display
     movlw   B'00001000'
     movwf   PORTA
     call    delay2
-    clrf    PORTA
     return
     
 Stopped
+    btfsc PORTA,4
+    goto Stopped
+    
     movfw   Segment1
     call    conversion
     movwf   PORTB
@@ -209,8 +219,11 @@ Stopped
     movwf   PORTA
     call    delay2
     clrf    PORTA
-    btfsc   PORTB,4
-    return
+    btfsc   PORTA,4
+    goto test
+    
+    btfsc   PORTB,0
+    goto    loop
     goto    Stopped
     
 end

@@ -1,3 +1,4 @@
+;Michael Otty and Laurabelle Kakulu
 #include P16F84A.INC
 __config _XT_OSC  &  _WDT_OFF & _PWRTE_ON
 

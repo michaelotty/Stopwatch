@@ -1,13 +1,15 @@
 #include P16F84A.INC
-    __config _XT_OSC  &  _WDT_OFF & _PWRTE_ON
+__config _XT_OSC  &  _WDT_OFF & _PWRTE_ON
+
 ;File Registers used by delay subroutine and the counter
-Segment1  EQU H'0D'
-Segment2  EQU H'0E'
-Segment3  EQU H'0F'
-Segment4  EQU H'10'
-DELAY_COUNT1            EQU     H'21'
-DELAY_COUNT2            EQU     H'22'
-DELAY_COUNT3            EQU     H'23'
+Segment1        EQU     H'0D'
+Segment2        EQU     H'0E'
+Segment3        EQU     H'0F'
+Segment4        EQU     H'10'
+DELAY_COUNT1    EQU     H'21'
+DELAY_COUNT2    EQU     H'22'
+DELAY_COUNT3    EQU     H'23'
+
 ORG h'0'
     bsf     STATUS,5      ;select bank 1
     movlw   B'00000001'   ;set up port B0 as input

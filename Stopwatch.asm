@@ -19,7 +19,7 @@ ORG h'0'
     bcf     STATUS,5        ;select bank 0
         
 loop
-    movlw   H'09'
+    movlw   H'A'
     call    conversion
     movwf   PORTB
     movlw   B'00000001'
@@ -28,7 +28,7 @@ loop
     clrf    PORTA
     
 
-    movlw   H'09'
+    movlw   H'A'
     call    conversion
     movwf   PORTB
     movlw   B'00000010'
@@ -37,7 +37,7 @@ loop
     clrf    PORTA
     
 
-    movlw   H'09'
+    movlw   H'A'
     call    conversion
     movwf   PORTB
     movlw   B'00000100'
@@ -46,7 +46,7 @@ loop
     clrf    PORTA
     
 
-    movlw   H'09'
+    movlw   H'A'
     call    conversion
     movwf   PORTB
     movlw   B'00001000'
@@ -54,86 +54,84 @@ loop
     call    delay2
     clrf    PORTA
 
-    ;changed btfsc so un caps
     btfsc   PORTA,4
     goto    loopcount    
     goto    loop
         
 
-    loopcount
-    call    delay2
-    movlw   H'9'
+loopcount
+    ;call    delay2
+    movlw   H'A'
     movwf   Segment4
-    movlw   H'9'
+    movlw   H'A'
     movwf   Segment3
-    movlw   H'9'
+    movlw   H'A'
     movwf   Segment2
-    movlw   H'9'
+    movlw   H'A'
     movwf   Segment1
-    milliloop
-    btfsc   PORTA,4
-    goto    Stopped
-    btfsc   PORTB,0
-    goto    loopcount
-    call    delay
+milliloop
+    ;btfsc   PORTB,0
+    ;goto    loopcount
+    ;call    delay
     call    display         ;Call the function which displays the number on the segments depending on the value of ‘Segment'
     decfsz  Segment4
     goto    milliloop       ;inner loop for the milliseconds
     call    display
-    movlw   H'9'            ;reset milliseconds
+    movlw   H'A'            ;reset milliseconds
     movwf   Segment4
     
     decfsz  Segment3        ;loop for centiseconds
     goto    milliloop 
     call    display
-    movlw   H'9'            ;reset centiseconds
+    movlw   H'A'            ;reset centiseconds
     movwf   Segment3
     
     decfsz  Segment2        ;loop for deciseconds
     goto    milliloop
     call    display
-    movlw   H'9'            ;reset deciseconds
+    movlw   H'A'            ;reset deciseconds
     movwf   Segment2 
     
     decfsz  Segment1        ;loop for seconds
     goto    milliloop
-    movlw   H'9'            ;reset seconds
+    movlw   H'A'            ;reset seconds
     movwf   Segment1 
     goto    loopcount
     
     
 ; program delay
-delay
-    movlw   H'FA'           ;initialise delay counters
-    movwf   DELAY_COUNT1
-    movlw   H'FA'
-    movwf   DELAY_COUNT2
-    movlw   H'00'
-    movwf   DELAY_COUNT3
-delay_loop1
-    decfsz  DELAY_COUNT1,F  ; innermost loop
-    goto    delay_loop1     ; decrements and loops until delay_count1=0
-    decfsz  DELAY_COUNT2,F  ; middle loop
-    goto    delay_loop1
-    decfsz  DELAY_COUNT3,F  ; outer loop
-    goto    delay_loop1
-    return
+;delay
+;    movlw   H'FF'           ;initialise delay counters
+;    movwf   DELAY_COUNT1
+;    movlw   H'01'
+;    movwf   DELAY_COUNT2
+;    movlw   H'00'
+;    movwf   DELAY_COUNT3
+;delay_loop1
+;    decfsz  DELAY_COUNT1,F  ; innermost loop
+;    goto    delay_loop1     ; decrements and loops until delay_count1=0
+;    decfsz  DELAY_COUNT2,F  ; middle loop
+;    goto    delay_loop1
+;    decfsz  DELAY_COUNT3,F  ; outer loop
+;    goto    delay_loop1
+;    return
 
 delay2
-    movlw   H'FF'
+    movlw   H'46'
       ;initialise delay counters
     movwf   DELAY_COUNT1
-    movlw	H'06'
-    movwf	DELAY_COUNT2
+;    movlw	H'02'
+;    movwf	DELAY_COUNT2
 delay_loop2
     decfsz  DELAY_COUNT1,F  ; innermost loop
     goto    delay_loop2     ; decrements and loops until delay_count1=0
-    decfsz	DELAY_COUNT2,F
-    goto	delay_loop2
+;    decfsz	DELAY_COUNT2,F
+;    goto	delay_loop2
     return
     
 conversion
     addwf   PCL
+    nop
     retlw   ~B'11100111'	;9
     retlw   ~B'11111110'	;8
     retlw   ~B'10100010'	;7
@@ -177,7 +175,7 @@ display
     movwf   PORTA
     call    delay2
     clrf    PORTA
-    Return
+    return
     
 Stopped
     movfw   Segment1
@@ -213,6 +211,6 @@ Stopped
     clrf    PORTA
     btfsc   PORTB,4
     return
-    goto    stopped
+    goto    Stopped
     
 end

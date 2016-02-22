@@ -72,7 +72,7 @@ milliloop
     btfsc   PORTA,4
     goto    Stopped
     
-    test
+test
     btfsc   PORTA, 4
     goto    test
     
@@ -113,28 +113,14 @@ milliloop
     
 
 delay2
-    movlw   H'46'
-      ;initialise delay counters
+    movlw   H'34'  ;initialise delay counters
     movwf   DELAY_COUNT1
-;    movlw	H'02'
-;    movwf	DELAY_COUNT2
 delay_loop2
-    decfsz  DELAY_COUNT1,F  ; innermost loop
-    goto    delay_loop2     ; decrements and loops until delay_count1=0
-;    decfsz	DELAY_COUNT2,F
-;    goto	delay_loop2
+    nop
+    decfsz  DELAY_COUNT1,F 
+    goto    delay_loop2  
     return
     
-    delay3
-    movlw   H'FF'
-      ;initialise delay counters
-    movwf   DELAY_COUNT1
-
-delay_loop3
-    decfsz  DELAY_COUNT1,F  ; innermost loop
-    goto    delay_loop2     ; decrements and loops until delay_count1=0
-
-    return
     
 conversion
     addwf   PCL

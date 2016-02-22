@@ -19,19 +19,19 @@ ORG h'0'
     movwf   TRISA
     bcf     STATUS,5        ;select bank 0
         
-loop ;Displays all 0's until the start button is pressed
-    movlw   H'A' ;Move 'A' to the working register
-    call    conversion ;Call the conversion chart using 'A' and return the correct binary number. 'A' correspongds to 0(on the display)
+loop                        ;Displays all 0's until the start button is pressed
+    movlw   H'A'            ;Move 'A' to the working register
+    call    conversion      ;Call the conversion chart using 'A' and return the correct binary number. 'A' correspongds to 0(on the display)
     movwf   PORTB
-    movlw   B'00000001' ;Power the 1st segment.
+    movlw   B'00000001'     ;Power the 1st segment.
     movwf   PORTA
-    call    delay2 ;Leaves the number displayed on the segment on for longer so numbers are brighter & clearer to see
-    clrf    PORTA  ;Stops the next number displaying on the current display
+    call    delay2          ;Leaves the number displayed on the segment on for longer so numbers are brighter & clearer to see
+    clrf    PORTA           ;Stops the next number displaying on the current display
     
     movlw   H'A'
     call    conversion
     movwf   PORTB
-    movlw   B'00000010' ;Power the 2nd segment.
+    movlw   B'00000010'     ;Power the 2nd segment.
     movwf   PORTA
     call    delay2
     clrf    PORTA
@@ -39,7 +39,7 @@ loop ;Displays all 0's until the start button is pressed
     movlw   H'A'
     call    conversion
     movwf   PORTB
-    movlw   B'00000100' ;Power the 3rd segment.
+    movlw   B'00000100'     ;Power the 3rd segment.
     movwf   PORTA
     call    delay2
     clrf    PORTA
@@ -47,22 +47,22 @@ loop ;Displays all 0's until the start button is pressed
     movlw   H'A'
     call    conversion
     movwf   PORTB
-    movlw   B'00001000' ;Power the 4th segment.
+    movlw   B'00001000'     ;Power the 4th segment.
     movwf   PORTA
     call    delay2
     clrf    PORTA
 
-    btfsc   PORTA,4 ;Checks for voltage at A4, if the button is unpressed, the voltage is 0. The next instruction is skipped.
-    goto    loopcount ;Start the stopwatch.
+    btfsc   PORTA,4         ;Checks for voltage at A4, if the button is unpressed, the voltage is 0. The next instruction is skipped.
+    goto    loopcount       ;Start the stopwatch.
     goto    loop
         
 
 loopcount ;Main loop
-    btfsc   PORTA,4 ;Debounce - Makes sure that the use has removed their finger from the button before continuing.
+    btfsc   PORTA,4         ;Debounce - Makes sure that the use has removed their finger from the button before continuing.
     goto    loopcount
 
 ;Moves 'A' to the registers
-    movlw   H'A' ;
+    movlw   H'A'
     movwf   Segment4
     movlw   H'A'
     movwf   Segment3
@@ -71,11 +71,11 @@ loopcount ;Main loop
     movlw   H'A'
     movwf   Segment1
 milliloop
-    btfsc   PORTA,4 ;Checks for voltage at A4
-    goto    Stopped ;Stops the stopwatch
+    btfsc   PORTA,4         ;Checks for voltage at A4
+    goto    Stopped         ;Stops the stopwatch
     
 continue ;Label for continuing the stopwatch after it has been stopped
-    btfsc   PORTA, 4 ;Debounce
+    btfsc   PORTA, 4        ;Debounce
     goto    continue
     
     ;call    delay
@@ -114,7 +114,7 @@ continue ;Label for continuing the stopwatch after it has been stopped
     
 
 delay2 ;delay inbetween powering segments
-    movlw   H'34'  ;initialise delay counters
+    movlw   H'34'           ;initialise delay counters
     movwf   DELAY_COUNT1
 delay_loop2
     nop 
@@ -138,8 +138,8 @@ conversion ;Conversion chart which converts the hexadecimal number in 'Segment' 
     retlw   ~B'10111110'	;0
 
 display ;For displaying the correct numbers depending on the value of 'Segment'
-    movfw   Segment1 ;Get value 
-    call    conversion ;Convert to correct binary number 
+    movfw   Segment1        ;Get value 
+    call    conversion      ;Convert to correct binary number 
     movwf   PORTB
     movlw   B'00000001'
     movwf   PORTA
@@ -171,9 +171,9 @@ display ;For displaying the correct numbers depending on the value of 'Segment'
     call    delay2
     return
     
-Stopped ;Loop for freezing the display. The same as 'Display' but it waits for the user to press the button again before returning.
+Stopped                     ;Loop for freezing the display. The same as 'Display' but it waits for the user to press the button again before returning.
     btfsc   PORTA,4
-    goto    Stopped ;Button debounce
+    goto    Stopped         ;Button debounce
     
     movfw   Segment1
     call    conversion
@@ -209,8 +209,8 @@ Stopped ;Loop for freezing the display. The same as 'Display' but it waits for t
     btfsc   PORTA,4
     goto    continue
     
-    btfsc   PORTB,0 ;Checks for voltage at A0 
-    goto    loop ;Restarts the stopwatch
+    btfsc   PORTB,0         ;Checks for voltage at A0 
+    goto    loop            ;Restarts the stopwatch
     goto    Stopped
     
 end

@@ -21,7 +21,7 @@ ORG h'0'
         
 loop                        ;Displays all 0's until the start button is pressed
     movlw   H'A'            ;Move 'A' to the working register
-    call    conversion      ;Call the conversion chart using 'A' and return the correct binary number. 'A' correspongds to 0(on the display)
+    call    conversion      ;Call the conversion chart using 'A' and return the correct binary number. 'A' corresponds to 0(on the display)
     movwf   PORTB
     movlw   B'00000001'     ;Power the 1st segment.
     movwf   PORTA

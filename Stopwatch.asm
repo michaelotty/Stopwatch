@@ -54,7 +54,8 @@ loop
     call    delay2
     clrf    PORTA
 
-    BTFSC   PORTA,4
+    ;changed btfsc so un caps
+    btfsc   PORTA,4
     goto    loopcount    
     goto    loop
         
@@ -70,27 +71,27 @@ loop
     movlw   H'9'
     movwf   Segment1
     milliloop
-    BTFSC   PORTA,4
+    btfsc   PORTA,4
     goto    Stopped
-    BTFSC   PORTB,0
+    btfsc   PORTB,0
     goto    loopcount
     call    delay
-    call    Display         ;Call the function which displays the number on the segments depending on the value of ‘Segment'
+    call    display         ;Call the function which displays the number on the segments depending on the value of ‘Segment'
     decfsz  Segment4
     goto    milliloop       ;inner loop for the milliseconds
-    call    Display
+    call    display
     movlw   H'9'            ;reset milliseconds
     movwf   Segment4
     
     decfsz  Segment3        ;loop for centiseconds
     goto    milliloop 
-    call    Display
+    call    display
     movlw   H'9'            ;reset centiseconds
     movwf   Segment3
     
     decfsz  Segment2        ;loop for deciseconds
     goto    milliloop
-    call    Display
+    call    display
     movlw   H'9'            ;reset deciseconds
     movwf   Segment2 
     
@@ -144,7 +145,7 @@ conversion
     retlw   ~B'10100000'	;1
     retlw   ~B'10111110'	;0
 
-Display
+display
     movfw   Segment1
     call    conversion
     movwf   PORTB
@@ -210,8 +211,8 @@ Stopped
     movwf   PORTA
     call    delay2
     clrf    PORTA
-    BTFSC   PORTB,4
-    Return
+    btfsc   PORTB,4
+    return
     goto    stopped
     
 end
